@@ -16,16 +16,16 @@ use testapi;
 sub run() { 
 
     # Wait initial screen for ipmi bootloader
-    assert_screen "virttest-bootload", 60;
+    assert_screen "virttest-bootloader", 60;
     
     # Wait the second screen for ipmi bootloader
-    send_key_until_needlematch "virttest-bootloader2", "f12", 3, 60;
+    send_key_until_needlematch "virttest-boot-into-pxe", "f12", 3, 60;
 
     # Wait pxe management screen
-    send_key_until_needlematch "virttest-pxe-management", "f12", 200, 1;
+    send_key_until_needlematch "virttest-pxe-menu", "f12", 200, 1;
 
     # Login to command line of pxe management
-    send_key_until_needlematch "virttest-prompt-pxe-install", "esc", 60, 1;
+    send_key_until_needlematch "virttest-pxe-edit-prompt", "esc", 60, 1;
     
     # Execute installation command on pxe management cmd console
     my $type_speed = 20;
