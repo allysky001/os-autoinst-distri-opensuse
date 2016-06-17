@@ -1146,8 +1146,8 @@ elsif (get_var("QA_TESTSET")) {
     loadtest "qa_automation/" . get_var("QA_TESTSET") . ".pm";
 }
 elsif (get_var("VIRT_AUTOTEST")) {
-#	load_boot_tests();
-#	load_inst_tests();
+	load_boot_tests();
+	load_inst_tests();
 	loadtest "virt_autotest/login_console.pm";
 	loadtest "virt_autotest/install_package.pm";
 	loadtest "virt_autotest/reboot_and_wait_up_normal1.pm";
