@@ -38,7 +38,7 @@ sub run() {
     upload_logs "/tmp/host-upgrade-postVerify-logs.tar";
 
     if ($ret !~ /Test run completed successfully/) {
-        die "Host upgrade verifacation failed!";
+        die "Host upgrade verification failed!";
     }
 
 #    TODO: parse the logs into junit format
