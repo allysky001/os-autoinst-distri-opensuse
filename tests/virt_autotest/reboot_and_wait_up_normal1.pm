@@ -11,7 +11,6 @@ use strict;
 use warnings;
 use File::Basename;
 use testapi;
-use lib "/var/lib/openqa/share/tests/sle-12-SP2/tests/virt_autotest/common";
 use base "reboot_and_wait_up";
 
 sub run() {

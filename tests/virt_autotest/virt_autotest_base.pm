@@ -7,7 +7,7 @@
 # notice and this notice are preserved.  This file is offered as-is,
 # without any warranty.
 #
-package teststepapi;
+package virt_autotest_base;
 use strict;
 use warnings;
 use File::Basename;
@@ -18,50 +18,17 @@ use Data::Dumper;
 use XML::Writer;
 use IO::File;
 
-our $PRODUCT_TESTED_ON = "SLES-12-SP2";
-our $PROJECT_NAME = "GuestInstallation";
-our $PACKAGE_NAME = "Guest Installation Test";
+our $PRODUCT_TESTED_ON = "Product";
+our $PROJECT_NAME = "Project Name";
+our $PACKAGE_NAME = "Package Name";
 
-sub get_guest_pattern() {
-    my $self = shift;
-    my $guest_pattern = get_var("GUEST_PATTERN", "");
-    if ($guest_pattern eq "") {
-        #$guest_pattern = "sles-11-sp[34]|sles-12";
-        $guest_pattern = "sles-12-sp1";
-    }
-    return $guest_pattern;
-}
-
-sub get_parallel_num() {
-    my $self = shift;
-    my $parallel_num = get_var("PARALLEL_NUM", "");
-    if ($parallel_num eq "") {
-        $parallel_num = "3";
-    }
-
-    return $parallel_num;
-}
-
-
-sub analyzeResult($) {
-    my ($self, $text) = @_;
-    my $result;
-    $text =~ /Test in progress(.*)Test run complete/s;
-    my $rough_result = $1;
-    foreach (split("\n", $rough_result)) {
-        if ($_ =~ /(\S+)\s+\.{3}\s+\.{3}\s+(PASSED|FAILED)\s+\((\S+)\)/g) {
-            $result->{$1}{"status"} = $2;
-            $result->{$1}{"time"} = $3;
-        }
-    }
-    print Dumper($result);
-    return $result;
+sub analyzeResult() {
+    die "You need to overload analyzeResult in your class";
 }
 
 sub generateXML($) {
     my ($self, $data) = @_;
 
-    #my $output = new IO::File(">ou");
     print Dumper($data);
     my %my_hash = %$data;
 
@@ -109,11 +76,9 @@ sub generateXML($) {
 
     $writer->end();
     $writer->to_string();
-    #system("echo -e \'$writer\' > /tmp/output1.xml");
-    #$output->close();
 }
 
-sub local_string_output($$) {
+sub execute_script_run($$) {
 
     my ($self, $cmd, $timeout) = @_;
     my $pattern = "CMD_FINISHED-" . int(rand(999999));
@@ -122,7 +87,6 @@ sub local_string_output($$) {
         $timeout = 10;
     }
 
-    #type_string "(bash -c " . $cmd . "; echo $pattern) | tee -a /dev/$serialdev\n";
     type_string "(" . $cmd . "; echo $pattern) | tee -a /dev/$serialdev\n";
     my $ret = wait_serial($pattern, $timeout);
 
@@ -130,42 +94,10 @@ sub local_string_output($$) {
         $ret =~ s/$pattern//g;
             return $ret;
     }
-	else {
+    else {
+        die "Timeout due to cmd run :[" . $cmd . "]\n";
         return 1;
     }
-
-}
-
-
-sub get_scrip_run() {
-    my $self = shift;
-    my $prd_version = script_output("cat /etc/issue");
-    my $pre_test_cmd;
-    if ($prd_version =~ m/SUSE Linux Enterprise Server 12/) {
-        $pre_test_cmd = "/usr/share/qa/tools/test_virtualization-virt_install_withopt-run";
-    }
-	else {
-         $pre_test_cmd = "/usr/share/qa/tools/test_virtualization-standalone-run";
-    }
-
-    return $pre_test_cmd;
-}
-
-sub execute_script_run($$) {
-    my ($self, $cmd, $timeout) = @_;
-
-    my $guest_pattern = $self->get_guest_pattern();
-    my $parallel_num  = $self->get_parallel_num();
-
-    my $full_cmd = $cmd . " -f " . $guest_pattern . " -n " . $parallel_num . " -r ";
-	print "full command is : \n" . $full_cmd . "\n";
-
-    my $ret = $self->local_string_output($full_cmd, $timeout);
-
-    if ($ret == 1) {
-        die "Timeout due to cmd run :[" . $full_cmd . "]\n";
-    }
-    return $ret
 
 }
 
@@ -174,27 +106,6 @@ sub push_junit_log($) {
 
     type_string "echo \'$junit_content\' > /tmp/output.xml\n";
     parse_junit_log("/tmp/output.xml");
-}
-
-sub run() {
-    my $self = shift;
-    # Got script run according to different kind of system
-    my $pre_test_cmd = $self->get_scrip_run();
-
-    # Execute script run
-    my $ret = $self->execute_script_run($pre_test_cmd, 100);
-
-    # Parse test result and generate junit file
-    my $tc_result = $self->analyzeResult($ret);
-    my $xml_result = $self->generateXML($tc_result);
-
-    # Upload and parse junit file.
-    $self->push_junit_log($xml_result);
-
-}
-
-sub test_flags {
-    return {important => 1};
 }
 
 1;

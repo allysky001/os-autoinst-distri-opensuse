@@ -10,9 +10,7 @@
 use strict;
 use warnings;
 use File::Basename;
-#use base "opensusebasetest";
-use lib "/var/lib/openqa/share/tests/sle-12-SP2/tests/virt_autotest/lib";
-use base "teststepapi";
+use base "virt_autotest_base";
 use testapi;
 
 sub install_package() {
@@ -44,7 +42,7 @@ sub update_package() {
 
     $update_pkg_cmd = $update_pkg_cmd . " 2>&1 | tee /tmp/update_virt_rpms.log ";
 
-    my $ret = $self->local_string_output($update_pkg_cmd, 7200);
+    my $ret = $self->execute_script_run($update_pkg_cmd, 7200);
     save_screenshot;
 
     upload_logs("/tmp/update_virt_rpms.log");
@@ -63,15 +61,15 @@ sub generate_grub() {
         assert_script_run("if ! grep -q \"GRUB_CMDLINE_XEN_DEFAULT=.*console=com1 com1=115200\" /etc/default/grub;then sed -ri 's/\(GRUB_CMDLINE_XEN_DEFAULT=.*\)\"/\\1 console=com1 com1=115200\"/' /etc/default/grub ; fi");
 
     }
-	else {
+    else {
         assert_script_run("if ! grep -q \"GRUB_CMDLINE_LINUX_DEFAULT=.*console=ttyS1,115200.*console=tty\" /etc/default/grub;then sed -ri 's/\(GRUB_CMDLINE_LINUX_DEFAULT=.*\)\"/\\1 console=ttyS1,115200 console=tty\"/' /etc/default/grub ; fi");
     }
 
-        upload_logs("/etc/default/grub");
+    upload_logs("/etc/default/grub");
 
-        my $gen_grub_cmd = "grub2-mkconfig -o /boot/grub2/grub.cfg";
+    my $gen_grub_cmd = "grub2-mkconfig -o /boot/grub2/grub.cfg";
 
-        assert_script_run($gen_grub_cmd, 40);
+    assert_script_run($gen_grub_cmd, 40);
 }
 
 
