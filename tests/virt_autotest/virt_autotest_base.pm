@@ -26,6 +26,10 @@ sub analyzeResult() {
     die "You need to overload analyzeResult in your class";
 }
 
+sub get_script_run() {
+    die "You need to overload this func in your class";
+}
+
 sub generateXML($) {
     my ($self, $data) = @_;
 
@@ -96,7 +100,6 @@ sub execute_script_run($$) {
     }
     else {
         die "Timeout due to cmd run :[" . $cmd . "]\n";
-        return 1;
     }
 
 }

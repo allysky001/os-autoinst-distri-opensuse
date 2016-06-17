@@ -7,13 +7,11 @@
 # notice and this notice are preserved.  This file is offered as-is,
 # without any warranty.
 #
-use lib "/var/lib/openqa/share/tests/sle-12-SP2/tests/virt_autotest/lib";
-use lib "/var/lib/openqa/share/tests/sle-12-SP2/tests/virt_autotest/Prj2_Host_Upgrade/";
 use base "host_upgrade_base";
 #use virt_utils qw(set_serialdev);
 use testapi;
 
-sub get_scrip_run() {
+sub get_script_run() {
     my $self = shift;
     my $pre_test_cmd;
 
@@ -42,7 +40,7 @@ sub run() {
 #    &virt_utils::set_serialdev();
 
     # Got script run according to different kind of system
-    my $pre_test_cmd = $self->get_scrip_run();
+    my $pre_test_cmd = $self->get_script_run();
 
     # Execute script run
     my $ret = $self->execute_script_run($pre_test_cmd, 180);

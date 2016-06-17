@@ -10,24 +10,23 @@
 package host_upgrade_base;
 use strict;
 use warnings;
-use lib "/var/lib/openqa/share/tests/sle-12-SP2/tests/virt_autotest/lib";
-use base "teststepapi";
+use base "virt_autotest_base";
 use testapi;
 
 our $PRODUCT_TESTED_ON = "SLES-12-SP2";
 our $PROJECT_NAME = "Host_Upgrade";
 
-sub execute_script_run($$) {
-    my ($self, $cmd, $timeout) = @_;
-
-    my $ret = $self->local_string_output($cmd, $timeout);
-
-    if ($ret == 1 ) {
-        die "Timeout due to cmd run :[" . $cmd . "]\n";
-    }
-    return $ret;
-
-}
+#sub execute_script_run($$) {
+#    my ($self, $cmd, $timeout) = @_;
+#
+#    my $ret = $self->local_string_output($cmd, $timeout);
+#
+#    if ($ret == 1 ) {
+#        die "Timeout due to cmd run :[" . $cmd . "]\n";
+#    }
+#    return $ret;
+#
+#}
 
 sub get_test_name_prefix() {
     my $self = shift;
