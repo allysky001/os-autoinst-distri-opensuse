@@ -91,7 +91,7 @@ sub execute_script_run($$) {
         $timeout = 10;
     }
 
-    type_string "(" . $cmd . "; echo $pattern) | tee -a /dev/$serialdev\n";
+    type_string "(" . $cmd . "; echo $pattern) 2>&1 | tee -a /dev/$serialdev\n";
     my $ret = wait_serial($pattern, $timeout);
 
     if ($ret) {
