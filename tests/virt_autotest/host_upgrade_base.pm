@@ -14,28 +14,16 @@ use base "virt_autotest_base";
 use testapi;
 
 our $PRODUCT_TESTED_ON = "SLES-12-SP2";
-our $PROJECT_NAME = "Host_Upgrade";
-
-#sub execute_script_run($$) {
-#    my ($self, $cmd, $timeout) = @_;
-#
-#    my $ret = $self->local_string_output($cmd, $timeout);
-#
-#    if ($ret == 1 ) {
-#        die "Timeout due to cmd run :[" . $cmd . "]\n";
-#    }
-#    return $ret;
-#
-#}
+our $PROJECT_NAME      = "Host_Upgrade";
 
 sub get_test_name_prefix() {
-    my $self = shift;
+    my $self             = shift;
     my $test_name_prefix = "";
 
-    my $mode = get_var("TEST_MODE", "");
+    my $mode       = get_var("TEST_MODE",       "");
     my $hypervisor = get_var("HOST_HYPERVISOR", "");
-    my $base = get_var("BASE_PRODUCT", ""); #EXAMPLE, sles-11-sp3
-    my $upgrade = get_var("UPGRADE_PRODUCT", ""); #EXAMPLE, sles-12-sp2
+    my $base       = get_var("BASE_PRODUCT",    "");    #EXAMPLE, sles-11-sp3
+    my $upgrade    = get_var("UPGRADE_PRODUCT", "");    #EXAMPLE, sles-12-sp2
 
     $base =~ s/-//g;
     $upgrade =~ s/-//g;

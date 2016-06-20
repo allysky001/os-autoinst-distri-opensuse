@@ -15,8 +15,8 @@ use base "opensusebasetest";
 use testapi;
 
 sub reboot_and_wait_up() {
-    my $self=shift;
-    my $reboot_timeout=shift;
+    my $self           = shift;
+    my $reboot_timeout = shift;
 
     select_console('root-console');
     type_string("/sbin/reboot\n");
@@ -26,7 +26,7 @@ sub reboot_and_wait_up() {
     #add switch xen kernel
     assert_screen "grub2", 120;
     if (!get_var("reboot_for_upgrade_step")) {
-        if (get_var("XEN") || check_var("HOST_HYPERVISOR","xen")) {
+        if (get_var("XEN") || check_var("HOST_HYPERVISOR", "xen")) {
             send_key_until_needlematch("bootmenu-xen-kernel", 'down', 10, 1);
             send_key 'ret';
         }

@@ -12,8 +12,8 @@ use base "virt_autotest_base";
 use testapi;
 
 our $PRODUCT_TESTED_ON = "SLES-12-SP2";
-our $PROJECT_NAME = "GuestIn_stallation";
-our $PACKAGE_NAME = "Guest Installation Test";
+our $PROJECT_NAME      = "GuestIn_stallation";
+our $PACKAGE_NAME      = "Guest Installation Test";
 
 sub get_script_run() {
     my $prd_version = script_output("cat /etc/issue");
@@ -21,13 +21,13 @@ sub get_script_run() {
     if ($prd_version =~ m/SUSE Linux Enterprise Server 12/) {
         $pre_test_cmd = "/usr/share/qa/tools/test_virtualization-virt_install_withopt-run";
     }
-	else {
-         $pre_test_cmd = "/usr/share/qa/tools/test_virtualization-standalone-run";
+    else {
+        $pre_test_cmd = "/usr/share/qa/tools/test_virtualization-standalone-run";
     }
 
     $guest_pattern = get_var('GUEST_PATTERN', 'sles-12-sp2-64-[p|f]v-def-net');
-    $parallel_num  = get_var("PARALLEL_NUM", "2");
-    $pre_test_cmd = $pre_test_cmd . " -f " . $guest_pattern . " -n " . $parallel_num . " -r ";
+    $parallel_num  = get_var("PARALLEL_NUM",  "2");
+    $pre_test_cmd  = $pre_test_cmd . " -f " . $guest_pattern . " -n " . $parallel_num . " -r ";
 
     return $pre_test_cmd;
 }
@@ -40,16 +40,14 @@ sub analyzeResult($) {
     foreach (split("\n", $rough_result)) {
         if ($_ =~ /(\S+)\s+\.{3}\s+\.{3}\s+(PASSED|FAILED)\s+\((\S+)\)/g) {
             $result->{$1}{"status"} = $2;
-            $result->{$1}{"time"} = $3;
+            $result->{$1}{"time"}   = $3;
         }
     }
     #print Dumper($result);
     return $result;
 }
 
-
-
-sub run() { 
+sub run() {
     my $self = shift;
     # Got script run according to different kind of system
     my $test_cmd = get_script_run();
@@ -57,7 +55,7 @@ sub run() {
     my $ret = $self->execute_script_run($test_cmd, 7600);
 
     # Parse test result and generate junit file
-    my $tc_result = $self->analyzeResult($ret);
+    my $tc_result  = $self->analyzeResult($ret);
     my $xml_result = $self->generateXML($tc_result);
 
     # Upload and parse junit file.

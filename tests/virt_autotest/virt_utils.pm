@@ -18,17 +18,19 @@ use Data::Dumper;
 use XML::Writer;
 use IO::File;
 
-our @EXPORT=qw(set_serialdev);
+our @EXPORT = qw(set_serialdev);
 
-sub set_serialdev(){
-    if (get_var("XEN") || check_var("HOST_HYPERVISOR","xen")){
-        my $hostReleaseInfo=script_output("cat /etc/SuSE-release");
-        if ($hostReleaseInfo =~ /VERSION = 12\nPATCHLEVEL = 2\n/m){
+sub set_serialdev() {
+    if (get_var("XEN") || check_var("HOST_HYPERVISOR", "xen")) {
+        my $hostReleaseInfo = script_output("cat /etc/SuSE-release");
+        if ($hostReleaseInfo =~ /VERSION = 12\nPATCHLEVEL = 2\n/m) {
             $serialdev = "hvc0";
-        }else {
+        }
+        else {
             $serialdev = "xvc0";
         }
-    }else {
+    }
+    else {
         $serialdev = "ttyS1";
     }
 }

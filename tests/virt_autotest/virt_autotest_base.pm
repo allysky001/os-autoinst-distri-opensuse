@@ -19,8 +19,8 @@ use XML::Writer;
 use IO::File;
 
 our $PRODUCT_TESTED_ON = "Product";
-our $PROJECT_NAME = "Project Name";
-our $PACKAGE_NAME = "Package Name";
+our $PROJECT_NAME      = "Project Name";
+our $PACKAGE_NAME      = "Package Name";
 
 sub analyzeResult() {
     die "You need to overload analyzeResult in your class";
@@ -41,12 +41,13 @@ sub generateXML($) {
     my $xml_result;
     my $pass_nums = 0;
     my $fail_nums = 0;
-    my $writer = new XML::Writer(DATA_MODE => 'true', DATA_INDENT => 2, OUTPUT=>'self');
+    my $writer    = new XML::Writer(DATA_MODE => 'true', DATA_INDENT => 2, OUTPUT => 'self');
 
-    foreach my $item (keys (%my_hash) ) {
+    foreach my $item (keys(%my_hash)) {
         if ($my_hash{$item}->{"status"} =~ m/PASSED/) {
             $pass_nums += 1;
-        } else {
+        }
+        else {
             $fail_nums += 1;
         }
     }
@@ -54,12 +55,11 @@ sub generateXML($) {
     $writer->startTag('testsuites', "error" => "0", "failures" => "$fail_nums", "name" => $PROJECT_NAME, "skipped" => "0", "tests" => "$count", "time" => "");
     $writer->startTag('testsuite', "error" => "0", "failures" => "$fail_nums", "hostname" => "`hostname`", "id" => "0", "name" => $PRODUCT_TESTED_ON, "package" => $PACKAGE_NAME, "skipped" => "0", "tests" => $case_num, "time" => "", "timestamp" => "2016-02-16T02:50:00");
 
-    foreach my $item (keys (%my_hash)) {
-
+    foreach my $item (keys(%my_hash)) {
         if ($my_hash{$item}->{"status"} =~ m/PASSED/) {
             $case_status = "success";
         }
-		else {
+        else {
             $case_status = "failure";
         }
 
@@ -83,7 +83,6 @@ sub generateXML($) {
 }
 
 sub execute_script_run($$) {
-
     my ($self, $cmd, $timeout) = @_;
     my $pattern = "CMD_FINISHED-" . int(rand(999999));
 
@@ -96,7 +95,7 @@ sub execute_script_run($$) {
 
     if ($ret) {
         $ret =~ s/$pattern//g;
-            return $ret;
+        return $ret;
     }
     else {
         die "Timeout due to cmd run :[" . $cmd . "]\n";

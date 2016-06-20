@@ -15,12 +15,12 @@ sub get_script_run() {
     my $self = shift;
     my $pre_test_cmd;
 
-    my $mode = get_var("TEST_MODE", "");
-    my $hypervisor = get_var("HOST_HYPERVISOR", "");
-    my $base = get_var("BASE_PRODUCT", ""); #EXAMPLE, sles-11-sp3
-    my $upgrade = get_var("UPGRADE_PRODUCT", ""); #EXAMPLE, sles-12-sp2
-    my $upgrade_repo = get_var("UPGRADE_REPO", "");
-    my $guest_list = get_var("GUEST_LIST", "");
+    my $mode         = get_var("TEST_MODE",       "");
+    my $hypervisor   = get_var("HOST_HYPERVISOR", "");
+    my $base         = get_var("BASE_PRODUCT",    "");    #EXAMPLE, sles-11-sp3
+    my $upgrade      = get_var("UPGRADE_PRODUCT", "");    #EXAMPLE, sles-12-sp2
+    my $upgrade_repo = get_var("UPGRADE_REPO",    "");
+    my $guest_list   = get_var("GUEST_LIST",      "");
 
     $pre_test_cmd = "/usr/share/qa/tools/_generate_vh-update_tests.sh";
     $pre_test_cmd .= " -m $mode";
@@ -33,11 +33,11 @@ sub get_script_run() {
     return "$pre_test_cmd";
 }
 
-sub run() { 
+sub run() {
     my $self = shift;
 
-#    #set the correct serial dev for ipmi xen and non-xen host according to the installed product release
-#    &virt_utils::set_serialdev();
+    # Set the correct serial dev for ipmi xen and non-xen host according to the installed product release
+    # &virt_utils::set_serialdev();
 
     # Got script run according to different kind of system
     my $pre_test_cmd = $self->get_script_run();
@@ -45,7 +45,7 @@ sub run() {
     # Execute script run
     my $ret = $self->execute_script_run($pre_test_cmd, 180);
     save_screenshot;
-    if ( $ret !~ /Generated test run file/ ) {
+    if ($ret !~ /Generated test run file/) {
         die "Generate test files failed!";
     }
 

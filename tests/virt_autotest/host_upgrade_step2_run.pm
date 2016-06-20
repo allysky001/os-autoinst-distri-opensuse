@@ -17,14 +17,15 @@ sub get_script_run() {
 
     my $pre_test_cmd = $self->get_test_name_prefix;
     $pre_test_cmd .= "-run 02";
+
     return "$pre_test_cmd";
 }
 
-sub run() { 
+sub run() {
     my $self = shift;
 
-#    #set the correct serial dev for ipmi xen and non-xen host according to the installed product release
-#    &virt_utils::set_serialdev();
+    # Set the correct serial dev for ipmi xen and non-xen host according to the installed product release
+    # &virt_utils::set_serialdev();
 
     # Got script run according to different kind of system
     my $pre_test_cmd = $self->get_script_run();

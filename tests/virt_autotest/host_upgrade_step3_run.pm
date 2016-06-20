@@ -10,21 +10,21 @@
 use base "host_upgrade_base";
 use testapi;
 use strict;
-#use virt_utils qw(set_serialdev);
 
 sub get_script_run() {
     my $self = shift;
 
     my $pre_test_cmd = $self->get_test_name_prefix;
     $pre_test_cmd .= "-run 03";
+
     return "$pre_test_cmd";
 }
 
-sub run() { 
+sub run() {
     my $self = shift;
 
-#    #set the correct serial dev for ipmi xen and non-xen host according to the installed product release
-#    &virt_utils::set_serialdev();
+    # Set the correct serial dev for ipmi xen and non-xen host according to the installed product release
+    # &virt_utils::set_serialdev();
 
     # Got script run according to different kind of system
     my $pre_test_cmd = $self->get_script_run();
@@ -41,13 +41,12 @@ sub run() {
         die "Host upgrade verification failed!";
     }
 
-#    TODO: parse the logs into junit format
-#    # Parse test result and generate junit file
-#    my $tc_result = $self->analyzeResult($ret);
-#    my $xml_result = $self->generateXML($tc_result);
-#
-#    # Upload and parse junit file.
-#    $self->push_junit_log($xml_result);
+    # TODO: parse the logs into junit format
+    #    my $tc_result = $self->analyzeResult($ret);
+    #    my $xml_result = $self->generateXML($tc_result);
+    #
+    #    # Upload and parse junit file.
+    #    $self->push_junit_log($xml_result);
 
 }
 

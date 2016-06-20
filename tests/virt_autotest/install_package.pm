@@ -14,29 +14,28 @@ use base "virt_autotest_base";
 use testapi;
 
 sub install_package() {
-    my $self=shift;
+    my $self = shift;
     my $qa_server_repo = get_var('QA_SERVER_REPO', '');
     if ($qa_server_repo) {
         type_string "zypper --non-interactive rr server-repo\n";
         assert_script_run("zypper --non-interactive --no-gpg-check -n ar -f '$qa_server_repo' server-repo");
     }
-	else {
+    else {
         die "There is no qa server repo defined variable QA_SERVER_REPO\n";
     }
 
     assert_script_run("zypper --non-interactive --gpg-auto-import-keys ref", 90);
-    assert_script_run("zypper --non-interactive -n in qa_lib_virtauto", 1800);
+    assert_script_run("zypper --non-interactive -n in qa_lib_virtauto",      1800);
 }
 
 sub update_package() {
-    my $self = shift;
-    my $test_type = get_var('TEST_TYPE', 'Milestone');
-    
+    my $self           = shift;
+    my $test_type      = get_var('TEST_TYPE', 'Milestone');
     my $update_pkg_cmd = "source /usr/share/qa/virtautolib/lib/virtlib;update_virt_rpms";
     if ($test_type eq 'Milestone') {
         $update_pkg_cmd = $update_pkg_cmd . " off on off";
     }
-	else {
+    else {
         $update_pkg_cmd = $update_pkg_cmd . " off off on";
     }
 
@@ -47,7 +46,7 @@ sub update_package() {
 
     upload_logs("/tmp/update_virt_rpms.log");
 
-    if ( $ret !~ /Need to reboot system to make the rpms work/m) {
+    if ($ret !~ /Need to reboot system to make the rpms work/m) {
         die " Update virt rpms fail, going to terminate following test!";
     }
 
@@ -55,7 +54,7 @@ sub update_package() {
 
 
 sub generate_grub() {
-    my $self=shift;
+    my $self = shift;
 
     if (get_var("XEN")) {
         assert_script_run("if ! grep -q \"GRUB_CMDLINE_XEN_DEFAULT=.*console=com1 com1=115200\" /etc/default/grub;then sed -ri 's/\(GRUB_CMDLINE_XEN_DEFAULT=.*\)\"/\\1 console=com1 com1=115200\"/' /etc/default/grub ; fi");
@@ -73,7 +72,7 @@ sub generate_grub() {
 }
 
 
-sub run() { 
+sub run() {
     my $self = shift;
 
     $self->install_package();

@@ -14,17 +14,16 @@ use File::Basename;
 use base "opensusebasetest";
 use testapi;
 
-sub run() { 
+sub run() {
     # Wait for bootload for the first time.
     assert_screen "grub2", 120;
     if (get_var("XEN")) {
         send_key_until_needlematch("bootmenu-xen-kernel", 'down', 10, 1);
         send_key 'ret';
     }
-    
-    assert_screen(["generic-destop", "generic-destop-virt","displaymanager"], 300);
+
+    assert_screen(["generic-destop", "generic-destop-virt", "displaymanager"], 300);
     select_console('root-console');
-    
     sleep 3;
 }
 

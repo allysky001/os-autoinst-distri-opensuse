@@ -14,8 +14,8 @@ use testapi;
 use base "reboot_and_wait_up";
 
 sub run() {
-    my $self=shift;
-    my $timeout=300;
+    my $self    = shift;
+    my $timeout = 300;
     $self->reboot_and_wait_up($timeout);
 }
 

@@ -507,7 +507,7 @@ sub load_inst_tests() {
     }
     loadtest "installation/addon_products_sle.pm";
     if (noupdatestep_is_applicable) {
-        if (check_var('ARCH', 'x86_64') && sle_version_at_least('12-SP2') && is_server && (!is_sles4sap || is_sles4sap_standard) && !check_var('NOT_INSTALL_TO',1)) {
+        if (check_var('ARCH', 'x86_64') && sle_version_at_least('12-SP2') && is_server && (!is_sles4sap || is_sles4sap_standard) && !check_var('NOT_INSTALL_TO', 1)) {
             loadtest "installation/system_role.pm";
         }
         loadtest "installation/partitioning.pm";
@@ -1146,21 +1146,21 @@ elsif (get_var("QA_TESTSET")) {
     loadtest "qa_automation/" . get_var("QA_TESTSET") . ".pm";
 }
 elsif (get_var("VIRT_AUTOTEST")) {
-	load_boot_tests();
-	load_inst_tests();
-	loadtest "virt_autotest/login_console.pm";
-	loadtest "virt_autotest/install_package.pm";
-	loadtest "virt_autotest/reboot_and_wait_up_normal1.pm";
+    load_boot_tests();
+    load_inst_tests();
+    loadtest "virt_autotest/login_console.pm";
+    loadtest "virt_autotest/install_package.pm";
+    loadtest "virt_autotest/reboot_and_wait_up_normal1.pm";
 
-	if (get_var("VIRT_PRJ1_GUEST_INSTALL")) {
-		loadtest "virt_autotest/guest_installation_run.pm";
-	}
-	elsif (get_var("VIRT_PRJ2_HOST_UPGRADE")) {
-		loadtest "virt_autotest/host_upgrade_generate_run_file.pm";
-		loadtest "virt_autotest/host_upgrade_step2_run.pm";
-		loadtest "virt_autotest/reboot_and_wait_up_upgrade.pm";
-		loadtest "virt_autotest/host_upgrade_step3_run.pm";
-	}
+    if (get_var("VIRT_PRJ1_GUEST_INSTALL")) {
+        loadtest "virt_autotest/guest_installation_run.pm";
+    }
+    elsif (get_var("VIRT_PRJ2_HOST_UPGRADE")) {
+        loadtest "virt_autotest/host_upgrade_generate_run_file.pm";
+        loadtest "virt_autotest/host_upgrade_step2_run.pm";
+        loadtest "virt_autotest/reboot_and_wait_up_upgrade.pm";
+        loadtest "virt_autotest/host_upgrade_step3_run.pm";
+    }
 }
 elsif (get_var("QAM_MINIMAL")) {
     prepare_target();

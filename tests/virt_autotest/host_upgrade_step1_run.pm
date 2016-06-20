@@ -16,10 +16,11 @@ sub get_script_run() {
 
     my $pre_test_cmd = $self->get_test_name_prefix;
     $pre_test_cmd .= "-run 01";
+
     return "$pre_test_cmd";
 }
 
-sub run() { 
+sub run() {
     my $self = shift;
     # Got script run according to different kind of system
     my $pre_test_cmd = $self->get_script_run();
