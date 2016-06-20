@@ -30,14 +30,13 @@ sub run() {
     # Execute installation command on pxe management cmd console
     my $type_speed = 20;
     my $image_path = get_var("HOST_IMG_URL");
-    type_string  ${image_path} . "\n", $type_speed;
-    
-    #type_string "vga=791 ",                   $type_speed;
-    #type_string "Y2DEBUG=1 ",                 $type_speed;
-    #type_string "video=1024x768-16 ",         $type_speed;
-    #type_string "console=ttyS1,115200 ", $type_speed;    # to get crash dumps as text
-    #type_string "console=tty ",               $type_speed;  
-    #send_key 'ret'
+    type_string ${image_path},                $type_speed;
+    type_string "vga=791 ",                   $type_speed;
+    type_string "Y2DEBUG=1 ",                 $type_speed;
+    type_string "video=1024x768-16 ",         $type_speed;
+    type_string "console=ttyS1,115200 ",      $type_speed;    # to get crash dumps as text
+    type_string "console=tty ",               $type_speed;  
+    send_key 'ret';
     
     save_screenshot;
 }
