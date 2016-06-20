@@ -31,7 +31,7 @@ sub reboot_and_wait_up() {
             send_key 'ret';
         }
     }
-    assert_screen("displaymanager", $reboot_timeout);
+    assert_screen(["displaymanager", "virttest-displaymanager"], $reboot_timeout);
     select_console('root-console');
 
 }
