@@ -18,10 +18,6 @@ use Data::Dumper;
 use XML::Writer;
 use IO::File;
 
-our $PRODUCT_TESTED_ON = "Product";
-our $PROJECT_NAME      = "Project Name";
-our $PACKAGE_NAME      = "Package Name";
-
 sub analyzeResult() {
     die "You need to overload analyzeResult in your class";
 }
@@ -32,6 +28,10 @@ sub get_script_run() {
 
 sub generateXML($) {
     my ($self, $data) = @_;
+
+    $self->{"product_tested_on"} = "Product";
+    $self->{"product_name"}      = "Project Name";
+    $self->{"package_name"}      = "Package Name";
 
     print Dumper($data);
     my %my_hash = %$data;
@@ -52,8 +52,8 @@ sub generateXML($) {
         }
     }
     my $count = $pass_nums + $fail_nums;
-    $writer->startTag('testsuites', "error" => "0", "failures" => "$fail_nums", "name" => $PROJECT_NAME, "skipped" => "0", "tests" => "$count", "time" => "");
-    $writer->startTag('testsuite', "error" => "0", "failures" => "$fail_nums", "hostname" => "`hostname`", "id" => "0", "name" => $PRODUCT_TESTED_ON, "package" => $PACKAGE_NAME, "skipped" => "0", "tests" => $case_num, "time" => "", "timestamp" => "2016-02-16T02:50:00");
+    $writer->startTag('testsuites', "error" => "0", "failures" => "$fail_nums", "name" => $self->{"product_name"}, "skipped" => "0", "tests" => "$count", "time" => "");
+    $writer->startTag('testsuite', "error" => "0", "failures" => "$fail_nums", "hostname" => "`hostname`", "id" => "0", "name" => $self->{"product_tested_on"}, "package" => $self->{"package_name"}, "skipped" => "0", "tests" => $case_num, "time" => "", "timestamp" => "2016-02-16T02:50:00");
 
     foreach my $item (keys(%my_hash)) {
         if ($my_hash{$item}->{"status"} =~ m/PASSED/) {

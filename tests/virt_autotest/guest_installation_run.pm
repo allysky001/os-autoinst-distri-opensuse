@@ -8,12 +8,7 @@
 # without any warranty.
 #
 use base "virt_autotest_base";
-
 use testapi;
-
-our $PRODUCT_TESTED_ON = "SLES-12-SP2";
-our $PROJECT_NAME      = "GuestIn_stallation";
-our $PACKAGE_NAME      = "Guest Installation Test";
 
 sub get_script_run() {
     my $prd_version = script_output("cat /etc/issue");
@@ -47,8 +42,13 @@ sub analyzeResult($) {
 }
 
 sub run() {
-	my $self = shift;
-	$self->run_test(7600, "", "yes");
+    my $self = shift;
+
+    $self->{"product_tested_on"} = "SLES-12-SP2";
+    $self->{"product_name"}      = "GuestIn_stallation";
+    $self->{"package_name"}      = "Guest Installation Test";
+
+    $self->run_test(7600, "", "yes");
 }
 
 sub test_flags {
