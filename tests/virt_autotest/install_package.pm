@@ -15,13 +15,13 @@ use testapi;
 
 sub install_package() {
     my $self = shift;
-    my $qa_server_repo = get_var('QA_SERVER_REPO', '');
+    my $qa_server_repo = get_var('QA_HEAD_REPO', '');
     if ($qa_server_repo) {
         type_string "zypper --non-interactive rr server-repo\n";
         assert_script_run("zypper --non-interactive --no-gpg-check -n ar -f '$qa_server_repo' server-repo");
     }
     else {
-        die "There is no qa server repo defined variable QA_SERVER_REPO\n";
+        die "There is no qa server repo defined variable QA_HEAD_REPO\n";
     }
 
     assert_script_run("zypper --non-interactive --gpg-auto-import-keys ref", 90);
