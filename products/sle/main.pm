@@ -474,6 +474,10 @@ sub is_reboot_after_installation_necessary() {
     return get_var("REBOOTAFTERINSTALL") && !get_var("UPGRADE");
 }
 
+sub install_this_version {
+    return !check_var('NOT_INSTALL_TO', 1);
+}
+
 sub load_inst_tests() {
     loadtest "installation/welcome.pm";
     if (get_var('IBFT')) {
@@ -507,7 +511,7 @@ sub load_inst_tests() {
     }
     loadtest "installation/addon_products_sle.pm";
     if (noupdatestep_is_applicable) {
-        if (check_var('ARCH', 'x86_64') && sle_version_at_least('12-SP2') && is_server && (!is_sles4sap || is_sles4sap_standard) && !check_var('NOT_INSTALL_TO', 1)) {
+        if (check_var('ARCH', 'x86_64') && sle_version_at_least('12-SP2') && is_server && (!is_sles4sap || is_sles4sap_standard) && install_this_version) {
             loadtest "installation/system_role.pm";
         }
         loadtest "installation/partitioning.pm";

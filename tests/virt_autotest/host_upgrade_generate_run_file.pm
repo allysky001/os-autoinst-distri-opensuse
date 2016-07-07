@@ -34,20 +34,7 @@ sub get_script_run() {
 
 sub run() {
     my $self = shift;
-
-    # Set the correct serial dev for ipmi xen and non-xen host according to the installed product release
-    # &virt_utils::set_serialdev();
-
-    # Got script run according to different kind of system
-    my $pre_test_cmd = $self->get_script_run();
-
-    # Execute script run
-    my $ret = $self->execute_script_run($pre_test_cmd, 180);
-    save_screenshot;
-    if ($ret !~ /Generated test run file/) {
-        die "Generate test files failed!";
-    }
-
+    $self->run_test(180, "Test run completed successfully");
 }
 
 1;

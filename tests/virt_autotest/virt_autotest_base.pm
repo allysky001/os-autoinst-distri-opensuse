@@ -93,6 +93,8 @@ sub execute_script_run($$) {
     type_string "(" . $cmd . "; echo $pattern) 2>&1 | tee -a /dev/$serialdev\n";
     my $ret = wait_serial($pattern, $timeout);
 
+	save_screenshot;
+
     if ($ret) {
         $ret =~ s/$pattern//g;
         return $ret;
@@ -108,6 +110,51 @@ sub push_junit_log($) {
 
     type_string "echo \'$junit_content\' > /tmp/output.xml\n";
     parse_junit_log("/tmp/output.xml");
+}
+
+sub run_test() {
+    my ($self, $timeout, $assert_pattern, $add_junit_log_flag, $upload_virt_log_flag, $log_dir, $compressed_log_name) = @_;
+	if (! $timeout) {
+		$timeout = 300;
+	}
+
+    my $test_cmd = $self->get_script_run();
+    my $script_output = $self->execute_script_run($test_cmd, $timeout);
+
+	if ("$add_junit_log_flag" = "yes") {
+		$self->add_junit_log($script_output);
+	}
+
+	if ("$upload_virt_log_flag" = "yes") {
+		upload_virt_logs($log_dir, $compressed_log_name);
+	}
+
+	if ($assert_pattern) {
+		unless ($script_output =~ /$assert_pattern/m) {
+			assert_script_run("grep \"/$assert_pattern/\" $log_dir /tmp/$compressed_log_name.tar.gz -r");
+		}
+	}
+
+}
+
+sub add_junit_log() {
+	my ($self, $job_output) = @_;
+
+    # Parse test result and generate junit file
+    my $tc_result  = $self->analyzeResult($job_output);
+    my $xml_result = $self->generateXML($tc_result);
+    # Upload and parse junit file.
+    $self->push_junit_log($xml_result);
+    	
+}
+
+sub upload_virt_logs() {
+	my ($log_dir, $compressed_log_name) = @_;
+
+	my $full_compressed_log_name=/tmp/$compressed_log_name.tar
+    script_run("tar cvf $full_compressed_log_name $log_dir; gzip $full_compressed_log_name; rm $log_dir -r", 60);
+    upload_logs "$full_compressed_log_name.gz";
+
 }
 
 1;

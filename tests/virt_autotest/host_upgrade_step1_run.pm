@@ -22,21 +22,7 @@ sub get_script_run() {
 
 sub run() {
     my $self = shift;
-    # Got script run according to different kind of system
-    my $pre_test_cmd = $self->get_script_run();
-
-    # Execute script run
-    my $ret = $self->execute_script_run($pre_test_cmd, 5400);
-    save_screenshot;
-
-    assert_script_run("tar cvf /tmp/host-upgrade-updateVirtRpms-logs.tar /var/log/qa/ctcs2/; rm  /var/log/qa/ctcs2/* -r", 60);
-
-    upload_logs("/tmp/host-upgrade-updateVirtRpms-logs.tar");
-
-    if ($ret !~ /Test run completed successfully/) {
-        die "Update virt rpms failed!";
-    }
+    $self->run_test(5400, "Test run completed successfully", "no", "yes", "/var/log/qa/ctcs2/", "host-upgrade-updateVirtRpms");
 }
-
 1;
 

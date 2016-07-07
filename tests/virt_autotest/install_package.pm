@@ -14,7 +14,6 @@ use base "virt_autotest_base";
 use testapi;
 
 sub install_package() {
-    my $self = shift;
     my $qa_server_repo = get_var('QA_HEAD_REPO', '');
     if ($qa_server_repo) {
         type_string "zypper --non-interactive rr server-repo\n";
@@ -54,8 +53,6 @@ sub update_package() {
 
 
 sub generate_grub() {
-    my $self = shift;
-
     if (get_var("XEN")) {
         assert_script_run("if ! grep -q \"GRUB_CMDLINE_XEN_DEFAULT=.*console=com1 com1=115200\" /etc/default/grub;then sed -ri 's/\(GRUB_CMDLINE_XEN_DEFAULT=.*\)\"/\\1 console=com1 com1=115200\"/' /etc/default/grub ; fi");
 
@@ -75,11 +72,11 @@ sub generate_grub() {
 sub run() {
     my $self = shift;
 
-    $self->install_package();
+    install_package;
 
     $self->update_package();
 
-    $self->generate_grub();
+    generate_grub;
 }
 
 

@@ -21,7 +21,6 @@ sub reboot_and_wait_up() {
     select_console('root-console');
     type_string("/sbin/reboot\n");
     reset_consoles;
-    #wait_boot textmode => 1;
     sleep 2;
     #add switch xen kernel
     assert_screen "grub2", 120;

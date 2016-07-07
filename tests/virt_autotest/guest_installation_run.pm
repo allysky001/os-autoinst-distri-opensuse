@@ -33,7 +33,7 @@ sub get_script_run() {
 }
 
 sub analyzeResult($) {
-    my ($self, $text) = @_;
+    my $text = shift;
     my $result;
     $text =~ /Test in progress(.*)Test run complete/s;
     my $rough_result = $1;
@@ -47,19 +47,8 @@ sub analyzeResult($) {
 }
 
 sub run() {
-    my $self = shift;
-    # Got script run according to different kind of system
-    my $test_cmd = get_script_run();
-
-    my $ret = $self->execute_script_run($test_cmd, 7600);
-
-    # Parse test result and generate junit file
-    my $tc_result  = $self->analyzeResult($ret);
-    my $xml_result = $self->generateXML($tc_result);
-
-    # Upload and parse junit file.
-    $self->push_junit_log($xml_result);
-
+	my $self = shift;
+	$self->run_test(7600, "", "yes");
 }
 
 sub test_flags {

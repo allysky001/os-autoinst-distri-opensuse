@@ -22,24 +22,9 @@ sub get_script_run() {
 }
 
 sub run() {
-    my $self = shift;
-
-    # Set the correct serial dev for ipmi xen and non-xen host according to the installed product release
-    # &virt_utils::set_serialdev();
-
-    # Got script run according to different kind of system
-    my $pre_test_cmd = $self->get_script_run();
-
-    # Execute script run
-    my $ret = $self->execute_script_run($pre_test_cmd, 36000);
-    save_screenshot;
-
-    script_run("tar cvf /tmp/host-upgrade-prepAndUpgrade-logs.tar /var/log/qa/ctcs2/;rm  /var/log/qa/ctcs2/* -r", 60);
-
-    upload_logs "/tmp/host-upgrade-prepAndUpgrade-logs.tar";
-
-    assert_script_run("grep \"Host upgrade to .* is done. Need to reboot system\" /tmp/host-upgrade-prepAndUpgrade-logs.tar");
-
+	my $self = shift;
+	$self->run_test(36000, "Host upgrade to .* is done. Need to reboot system", \
+	                "no", "yes", "/var/log/qa/ctcs2/", "host-upgrade-prepAndUpgrade");
 }
 
 1;
