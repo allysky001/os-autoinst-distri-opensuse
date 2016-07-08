@@ -30,7 +30,7 @@ sub run() {
     my $type_speed = 20;
     my $image_path = get_var("HOST_IMG_URL");
 
-    type_string ${image_path}, $type_speed;
+    type_string ${image_path} . " ", $type_speed;
     type_string "vga=791 ",              $type_speed;
     type_string "Y2DEBUG=1 ",            $type_speed;
     if (check_var("INSTALL_TO_OTHERS", 1)) {
