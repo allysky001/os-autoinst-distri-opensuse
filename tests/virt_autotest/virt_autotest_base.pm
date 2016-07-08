@@ -131,7 +131,7 @@ sub run_test() {
 
 	if ($assert_pattern) {
 		unless ($script_output =~ /$assert_pattern/m) {
-			assert_script_run("grep \"/$assert_pattern/\" $log_dir -r || grep \"/$assert_pattern/\" /tmp/$compressed_log_name.tar.gz -r");
+			assert_script_run("grep \"$assert_pattern\" $log_dir -r || zcat /tmp/$compressed_log_name.tar.gz | grep -a \"$assert_pattern\"");
 		}
 	}
 
@@ -152,7 +152,7 @@ sub upload_virt_logs() {
 	my ($log_dir, $compressed_log_name) = @_;
 
 	my $full_compressed_log_name = "/tmp/$compressed_log_name.tar";
-    script_run("tar cvf $full_compressed_log_name $log_dir; gzip $full_compressed_log_name; rm $log_dir -r", 60);
+    script_run("tar cvf $full_compressed_log_name $log_dir; gzip -f $full_compressed_log_name; rm $log_dir -r", 60);
     upload_logs "$full_compressed_log_name.gz";
 
 }
