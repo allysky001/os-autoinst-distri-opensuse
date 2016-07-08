@@ -475,7 +475,7 @@ sub is_reboot_after_installation_necessary() {
 }
 
 sub install_this_version {
-    return !check_var('NOT_INSTALL_TO', 1);
+    return !check_var('INSTALL_TO_OTHERS', 1);
 }
 
 sub load_inst_tests() {
