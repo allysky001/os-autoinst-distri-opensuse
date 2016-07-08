@@ -35,7 +35,8 @@ sub run() {
     type_string "Y2DEBUG=1 ",            $type_speed;
     if (check_var("INSTALL_TO_OTHERS", 1)) {
         type_string "video=1024x768-16 ", $type_speed;
-    else {
+    }
+	else {
         type_string "xvideo=1024x768 ",   $type_speed;
     }
     type_string "console=ttyS1,115200 ", $type_speed;    # to get crash dumps as text
