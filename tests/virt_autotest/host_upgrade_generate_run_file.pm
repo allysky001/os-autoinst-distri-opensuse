@@ -34,7 +34,7 @@ sub get_script_run() {
 
 sub run() {
     my $self = shift;
-    $self->run_test(180, "Test run completed successfully");
+    $self->run_test(180, "Generated test run file");
 }
 
 1;
