@@ -121,11 +121,11 @@ sub run_test() {
     my $test_cmd = $self->get_script_run();
     my $script_output = $self->execute_script_run($test_cmd, $timeout);
 
-	if ("$add_junit_log_flag" == "yes") {
+	if ($add_junit_log_flag eq "yes") {
 		$self->add_junit_log($script_output);
 	}
 
-	if ("$upload_virt_log_flag" == "yes") {
+	if ($upload_virt_log_flag eq "yes") {
 		upload_virt_logs($log_dir, $compressed_log_name);
 	}
 
