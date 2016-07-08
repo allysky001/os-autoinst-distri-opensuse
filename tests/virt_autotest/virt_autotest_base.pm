@@ -131,7 +131,7 @@ sub run_test() {
 
 	if ($assert_pattern) {
 		unless ($script_output =~ /$assert_pattern/m) {
-			assert_script_run("grep \"/$assert_pattern/\" $log_dir /tmp/$compressed_log_name.tar.gz -r");
+			assert_script_run("grep \"/$assert_pattern/\" $log_dir -r || grep \"/$assert_pattern/\" /tmp/$compressed_log_name.tar.gz -r");
 		}
 	}
 
