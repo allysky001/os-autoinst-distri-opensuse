@@ -28,7 +28,7 @@ sub get_script_run() {
 }
 
 sub analyzeResult($) {
-    my $text = shift;
+    my ($self, $text) = @_;
     my $result;
     $text =~ /Test in progress(.*)Test run complete/s;
     my $rough_result = $1;
