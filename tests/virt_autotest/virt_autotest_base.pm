@@ -114,7 +114,7 @@ sub push_junit_log($) {
 
 sub run_test() {
     my ($self, $timeout, $assert_pattern, $add_junit_log_flag, $upload_virt_log_flag, $log_dir, $compressed_log_name) = @_;
-    if (! $timeout) {
+    if (!$timeout) {
         $timeout = 300;
     }
 
@@ -145,7 +145,7 @@ sub add_junit_log() {
     my $xml_result = $self->generateXML($tc_result);
     # Upload and parse junit file.
     $self->push_junit_log($xml_result);
-        
+
 }
 
 sub upload_virt_logs() {
