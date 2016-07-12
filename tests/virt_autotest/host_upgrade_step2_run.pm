@@ -22,9 +22,9 @@ sub get_script_run() {
 }
 
 sub run() {
-	my $self = shift;
-	$self->run_test(36000, "Host upgrade to .* is done. Need to reboot system", \
-	                "no", "yes", "/var/log/qa/ctcs2/", "host-upgrade-prepAndUpgrade");
+    my $self = shift;
+    $self->run_test(36000, "Host upgrade to .* is done. Need to reboot system", \
+                    "no", "yes", "/var/log/qa/ctcs2/", "host-upgrade-prepAndUpgrade");
 }
 
 1;
